@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Shop.api.Data;
 using Shop.api.Dtos;
 using Shop.api.Helpers;
@@ -34,9 +30,7 @@ namespace Shop.api.Repositories
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _context
-                .Products.Include(p => p.Name)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Product> CreateAsync(Product productModel)
@@ -52,7 +46,9 @@ namespace Shop.api.Repositories
             var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
             if (existingProduct == null)
+            {
                 return null;
+            }
 
             existingProduct.Name = productDto.Name;
             existingProduct.Description = productDto.Description;
@@ -71,7 +67,9 @@ namespace Shop.api.Repositories
             var productModel = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
             if (productModel == null)
+            {
                 return null;
+            }
 
             _context.Products.Remove(productModel);
             await _context.SaveChangesAsync();

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Shop.api.Data;
 using Shop.api.Dtos;
@@ -29,7 +24,9 @@ namespace Shop.api.Models.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var products = await _productRepo.GetAllAsync(query);
 
@@ -42,12 +39,16 @@ namespace Shop.api.Models.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var product = await _productRepo.GetByIdAsync(id);
 
             if (product == null)
+            {
                 return NotFound();
+            }
 
             return Ok(product.ToProductDto());
         }
@@ -58,7 +59,9 @@ namespace Shop.api.Models.Controllers
         )
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var productModel = productDto.ToProductFromCreateDto();
 
@@ -72,34 +75,42 @@ namespace Shop.api.Models.Controllers
         }
 
         [HttpPut]
-        [Route("(id:int)")]
+        [Route("{id:int}")]
         public async Task<ActionResult<IEnumerable<Product>>> Update(
             [FromRoute] int id,
             [FromBody] UpdateProductRequestDto updateDto
         )
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var productModel = await _productRepo.UpdateAsync(id, updateDto);
 
             if (productModel == null)
+            {
                 return NotFound();
+            }
 
             return Ok(productModel.ToProductDto());
         }
 
         [HttpDelete]
-        [Route("(id:int)")]
+        [Route("{id:int}")]
         public async Task<ActionResult<IEnumerable<Product>>> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var productModel = await _productRepo.DeleteAsync(id);
 
             if (productModel == null)
+            {
                 return NotFound();
+            }
 
             return NoContent();
         }
