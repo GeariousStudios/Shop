@@ -1,4 +1,4 @@
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using Shop.api.Data;
 using Shop.api.Dtos;
 using Shop.api.Helpers;
