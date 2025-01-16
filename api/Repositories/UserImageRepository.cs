@@ -26,5 +26,29 @@ namespace Shop.api.Repositories
                 })
                 .ToListAsync();
         }
+
+        public async Task<UserImage> CreateAsync(UserImage userImage)
+        {
+            await _context.UserImages.AddAsync(userImage);
+            await _context.SaveChangesAsync();
+            return userImage;
+        }
+
+        public async Task<UserImage> DeleteUserImage(AppUser appUser, int imageId)
+        {
+            var userImageModel = await _context.UserImages.FirstOrDefaultAsync(i =>
+                i.AppUserId == appUser.Id && i.Image.Id == imageId
+            );
+
+            if (userImageModel == null)
+            {
+                return null;
+            }
+
+            _context.UserImages.Remove(userImageModel);
+            await _context.SaveChangesAsync();
+
+            return userImageModel;
+        }
     }
 }

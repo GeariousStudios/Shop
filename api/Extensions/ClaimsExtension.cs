@@ -12,7 +12,9 @@ namespace Shop.api.Extensions
         {
             return user
                 .Claims.SingleOrDefault(u =>
-                    u.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")
+                    u.Type.Equals(
+                        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+                    )
                 )
                 .Value;
         }
