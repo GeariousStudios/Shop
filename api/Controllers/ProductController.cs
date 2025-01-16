@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.api.Data;
 using Shop.api.Dtos;
@@ -54,6 +55,7 @@ namespace Shop.api.Models.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Product>>> Create(
             [FromBody] CreateProductRequestDto productDto
         )
@@ -76,6 +78,7 @@ namespace Shop.api.Models.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Product>>> Update(
             [FromRoute] int id,
             [FromBody] UpdateProductRequestDto updateDto
@@ -98,6 +101,7 @@ namespace Shop.api.Models.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Product>>> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
