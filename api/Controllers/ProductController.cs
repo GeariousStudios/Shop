@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.api.Data;
 using Shop.api.Dtos;
 using Shop.api.Helpers;
 using Shop.api.Interfaces;
@@ -12,12 +11,10 @@ namespace Shop.api.Models.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly IProductRepository _productRepo;
 
-        public ProductController(AppDbContext context, IProductRepository productRepo)
+        public ProductController(IProductRepository productRepo)
         {
-            _context = context;
             _productRepo = productRepo;
         }
 

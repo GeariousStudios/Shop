@@ -10,7 +10,6 @@ namespace Shop.api.Dtos
         [Index(nameof(Name))]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string Description { get; set; } = string.Empty;
     }

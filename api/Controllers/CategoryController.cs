@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.api.Data;
 using Shop.api.Dtos;
 using Shop.api.Helpers;
 using Shop.api.Interfaces;
@@ -12,12 +11,10 @@ namespace Shop.api.Models.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly ICategoryRepository _categoryRepo;
 
-        public CategoryController(AppDbContext context, ICategoryRepository categoryRepo)
+        public CategoryController(ICategoryRepository categoryRepo)
         {
-            _context = context;
             _categoryRepo = categoryRepo;
         }
 

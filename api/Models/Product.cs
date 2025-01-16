@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shop.api.Models
 {
+    [Table("Products")]
     public class Product
     {
         [Key]
@@ -17,10 +18,10 @@ namespace Shop.api.Models
 
         public int Stock { get; set; }
         public int CategoryId { get; set; }
-
-        public Category Category { get; set; } = null!;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; }
+
+        public List<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
     }
 }

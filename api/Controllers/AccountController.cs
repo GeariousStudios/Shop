@@ -7,7 +7,7 @@ using Shop.api.Models;
 
 namespace Shop.api.Controllers
 {
-    [Route("api/account")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

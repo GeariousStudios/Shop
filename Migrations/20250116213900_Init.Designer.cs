@@ -12,8 +12,8 @@ using Shop.api.Data;
 namespace Shop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250116191438_UpdateSeedData")]
-    partial class UpdateSeedData
+    [Migration("20250116213900_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,6 +257,30 @@ namespace Shop.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Shop.api.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("Shop.api.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -296,9 +320,37 @@ namespace Shop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.UserImage", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "ImageId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("UserImages");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.UserProduct", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("UserProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -352,15 +404,59 @@ namespace Shop.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shop.api.Models.Product", b =>
+            modelBuilder.Entity("Shop.api.Models.UserImage", b =>
                 {
-                    b.HasOne("Shop.api.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany("UserImages")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("Shop.api.Models.Image", "Image")
+                        .WithMany("UserImages")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.UserProduct", b =>
+                {
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany("UserProducts")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.api.Models.Product", "Product")
+                        .WithMany("UserProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.AppUser", b =>
+                {
+                    b.Navigation("UserImages");
+
+                    b.Navigation("UserProducts");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Image", b =>
+                {
+                    b.Navigation("UserImages");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Product", b =>
+                {
+                    b.Navigation("UserProducts");
                 });
 #pragma warning restore 612, 618
         }
