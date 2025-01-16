@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shop.api.Models;
 
 namespace Shop.api.Data
 {
-    public class ShopDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public ShopDbContext(DbContextOptions<ShopDbContext> dbContextOptions)
+        public AppDbContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions) { }
 
         public DbSet<Product> Products { get; set; }

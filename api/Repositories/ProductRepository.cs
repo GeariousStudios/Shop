@@ -9,9 +9,9 @@ namespace Shop.api.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ShopDbContext _context;
+        private readonly AppDbContext _context;
 
-        public ProductRepository(ShopDbContext context)
+        public ProductRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -25,7 +25,19 @@ namespace Shop.api.Repositories
                 products = products.Where(p => p.Name.Contains(query.Name));
             }
 
-            return await products.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    products = query.IsDescending
+                        ? products.OrderByDescending(p => p.Name)
+                        : products.OrderBy(p => p.Name);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await products.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)

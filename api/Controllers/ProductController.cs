@@ -11,10 +11,10 @@ namespace Shop.api.Models.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ShopDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IProductRepository _productRepo;
 
-        public ProductController(ShopDbContext context, IProductRepository productRepo)
+        public ProductController(AppDbContext context, IProductRepository productRepo)
         {
             _context = context;
             _productRepo = productRepo;

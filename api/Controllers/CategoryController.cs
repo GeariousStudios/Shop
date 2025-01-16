@@ -11,10 +11,10 @@ namespace Shop.api.Models.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly ShopDbContext _context;
+        private readonly AppDbContext _context;
         private readonly ICategoryRepository _categoryRepo;
 
-        public CategoryController(ShopDbContext context, ICategoryRepository categoryRepo)
+        public CategoryController(AppDbContext context, ICategoryRepository categoryRepo)
         {
             _context = context;
             _categoryRepo = categoryRepo;

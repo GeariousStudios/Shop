@@ -9,9 +9,9 @@ namespace Shop.api.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly ShopDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CategoryRepository(ShopDbContext context)
+        public CategoryRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -25,7 +25,19 @@ namespace Shop.api.Repositories
                 categories = categories.Where(c => c.Name.Contains(query.Name));
             }
 
-            return await categories.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    categories = query.IsDescending
+                        ? categories.OrderByDescending(p => p.Name)
+                        : categories.OrderBy(p => p.Name);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await categories.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Category?> GetByIdAsync(int id)
