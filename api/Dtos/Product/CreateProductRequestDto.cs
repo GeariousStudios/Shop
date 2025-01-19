@@ -13,7 +13,7 @@ namespace Shop.api.Dtos
         [Required]
         [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string Description { get; set; } = string.Empty;
-        public string? ImageUrl { get; set; }
+        public int? ImageUrlId { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]

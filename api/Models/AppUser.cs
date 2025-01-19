@@ -11,5 +11,6 @@ namespace Shop.api.Models
 
         public List<UserImage> UserImages { get; set; } = new List<UserImage>();
         public List<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
+        public List<UserReview> UserReviews { get; set; } = new List<UserReview>();
     }
 }

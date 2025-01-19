@@ -11,7 +11,7 @@ namespace Shop.api.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string? ImageUrl { get; set; }
+        public int? ImageUrlId { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
@@ -23,5 +23,6 @@ namespace Shop.api.Models
         public bool IsDeleted { get; set; }
 
         public List<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
     }
 }

@@ -11,17 +11,20 @@ namespace Shop.api.Data
             : base(dbContextOptions) { }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<UserProduct> UserProducts { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<UserReview> UserReviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<UserProduct>(u => u.HasKey(p => new { p.AppUserId, p.ProductId }));
-            builder.Entity<UserImage>(u => u.HasKey(p => new { p.AppUserId, p.ImageId }));
+            builder.Entity<UserImage>(u => u.HasKey(i => new { i.AppUserId, i.ImageId }));
+            builder.Entity<UserReview>(u => u.HasKey(r => new { r.AppUserId, r.ReviewId }));
 
             builder
                 .Entity<UserProduct>()
@@ -46,6 +49,18 @@ namespace Shop.api.Data
                 .HasOne(u => u.Image)
                 .WithMany(u => u.UserImages)
                 .HasForeignKey(i => i.ImageId);
+
+            builder
+                .Entity<UserReview>()
+                .HasOne(u => u.AppUser)
+                .WithMany(u => u.UserReviews)
+                .HasForeignKey(i => i.AppUserId);
+
+            builder
+                .Entity<UserReview>()
+                .HasOne(u => u.Review)
+                .WithMany(u => u.UserReviews)
+                .HasForeignKey(i => i.ReviewId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

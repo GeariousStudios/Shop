@@ -64,7 +64,7 @@ namespace Shop.api.Repositories
 
             existingProduct.Name = productDto.Name;
             existingProduct.Description = productDto.Description;
-            existingProduct.ImageUrl = productDto.ImageUrl;
+            existingProduct.ImageUrlId = productDto.ImageUrlId;
             existingProduct.Price = productDto.Price;
             existingProduct.Stock = productDto.Stock;
             existingProduct.CategoryId = productDto.CategoryId;

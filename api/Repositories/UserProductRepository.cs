@@ -23,7 +23,7 @@ namespace Shop.api.Repositories
                     Id = product.ProductId,
                     Name = product.Product.Name,
                     Description = product.Product.Description,
-                    ImageUrl = product.Product.ImageUrl,
+                    ImageUrlId = product.Product.ImageUrlId,
                     Price = product.Product.Price,
                     Stock = product.Product.Stock,
                     CategoryId = product.Product.CategoryId,

@@ -12,7 +12,7 @@ namespace Shop.api.Mappers
                 Id = productModel.Id,
                 Name = productModel.Name,
                 Description = productModel.Description,
-                ImageUrl = productModel.ImageUrl,
+                ImageUrlId = productModel.ImageUrlId,
                 Price = productModel.Price,
                 Stock = productModel.Stock,
                 CategoryId = productModel.CategoryId,
@@ -25,7 +25,7 @@ namespace Shop.api.Mappers
             {
                 Name = productDto.Name,
                 Description = productDto.Description,
-                ImageUrl = productDto.ImageUrl,
+                ImageUrlId = productDto.ImageUrlId,
                 Price = productDto.Price,
                 Stock = productDto.Stock,
                 CategoryId = productDto.CategoryId,
