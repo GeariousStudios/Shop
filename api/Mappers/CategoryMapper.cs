@@ -15,7 +15,7 @@ namespace Shop.api.Mappers
             };
         }
 
-        public static Category ToCategoryFromCreateDto(this CreateCategoryRequestDto categoryDto)
+        public static Category ToCategoryFromCreate(this CreateCategoryDto categoryDto)
         {
             return new Category { Name = categoryDto.Name, Description = categoryDto.Description };
         }

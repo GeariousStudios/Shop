@@ -54,13 +54,15 @@ namespace Shop.api.Data
                 .Entity<UserReview>()
                 .HasOne(u => u.AppUser)
                 .WithMany(u => u.UserReviews)
-                .HasForeignKey(i => i.AppUserId);
+                .HasForeignKey(i => i.AppUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .Entity<UserReview>()
                 .HasOne(u => u.Review)
                 .WithMany(u => u.UserReviews)
-                .HasForeignKey(i => i.ReviewId);
+                .HasForeignKey(i => i.ReviewId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

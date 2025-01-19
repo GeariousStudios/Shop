@@ -15,7 +15,7 @@ namespace Shop.api.Mappers
             };
         }
 
-        public static Image ToImageFromCreateDto(this CreateImageRequestDto imageDto)
+        public static Image ToImageFromCreate(this CreateImageDto imageDto)
         {
             return new Image { Name = imageDto.Name, ImageUrl = imageDto.ImageUrl };
         }

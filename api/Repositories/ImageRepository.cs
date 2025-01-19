@@ -53,7 +53,7 @@ namespace Shop.api.Repositories
             return imageModel;
         }
 
-        public async Task<Image?> UpdateAsync(int id, UpdateImageRequestDto imageDto)
+        public async Task<Image?> UpdateAsync(int id, UpdateImageDto imageDto)
         {
             var existingImage = await _context.Images.FirstOrDefaultAsync(i => i.Id == id);
 

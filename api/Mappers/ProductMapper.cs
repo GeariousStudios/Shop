@@ -19,7 +19,7 @@ namespace Shop.api.Mappers
             };
         }
 
-        public static Product ToProductFromCreateDto(this CreateProductRequestDto productDto)
+        public static Product ToProductFromCreate(this CreateProductDto productDto)
         {
             return new Product
             {

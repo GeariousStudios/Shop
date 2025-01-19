@@ -53,7 +53,7 @@ namespace Shop.api.Repositories
             return productModel;
         }
 
-        public async Task<Product?> UpdateAsync(int id, UpdateProductRequestDto productDto)
+        public async Task<Product?> UpdateAsync(int id, UpdateProductDto productDto)
         {
             var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 

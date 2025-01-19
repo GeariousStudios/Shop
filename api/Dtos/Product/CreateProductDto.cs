@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shop.api.Dtos
 {
-    public class UpdateCategoryRequestDto
+    public class CreateProductDto
     {
         [Required]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 100 characters")]
@@ -13,5 +13,17 @@ namespace Shop.api.Dtos
         [Required]
         [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string Description { get; set; } = string.Empty;
+        public int? ImageUrlId { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
+        public decimal Price { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock must be a non-negative number")]
+        public int Stock { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
     }
 }

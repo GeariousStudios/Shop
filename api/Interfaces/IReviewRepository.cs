@@ -9,7 +9,7 @@ namespace Shop.api.Interfaces
         Task<List<Review>> GetAllAsync(QueryObject query);
         Task<Review?> GetByIdAsync(int id);
         Task<Review> CreateAsync(Review reviewModel);
-        Task<Review?> UpdateAsync(int id, UpdateReviewRequestDto reviewDto);
+        Task<Review?> UpdateAsync(int id, Review reviewModel);
         Task<Review?> DeleteAsync(int id);
         Task<bool> ReviewExists(int id);
     }

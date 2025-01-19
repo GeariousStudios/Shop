@@ -12,7 +12,7 @@ using Shop.api.Data;
 namespace Shop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250116213900_Init")]
+    [Migration("20250119195706_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -299,8 +299,8 @@ namespace Shop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ImageUrlId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -321,6 +321,44 @@ namespace Shop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Shop.api.Models.UserImage", b =>
@@ -351,6 +389,21 @@ namespace Shop.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("UserProducts");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.UserReview", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("UserReviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -404,6 +457,21 @@ namespace Shop.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Shop.api.Models.Review", b =>
+                {
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.api.Models.Product", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("Shop.api.Models.UserImage", b =>
                 {
                     b.HasOne("Shop.api.Models.AppUser", "AppUser")
@@ -442,11 +510,32 @@ namespace Shop.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Shop.api.Models.UserReview", b =>
+                {
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany("UserReviews")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Shop.api.Models.Review", "Review")
+                        .WithMany("UserReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Review");
+                });
+
             modelBuilder.Entity("Shop.api.Models.AppUser", b =>
                 {
                     b.Navigation("UserImages");
 
                     b.Navigation("UserProducts");
+
+                    b.Navigation("UserReviews");
                 });
 
             modelBuilder.Entity("Shop.api.Models.Image", b =>
@@ -456,7 +545,14 @@ namespace Shop.Migrations
 
             modelBuilder.Entity("Shop.api.Models.Product", b =>
                 {
+                    b.Navigation("Reviews");
+
                     b.Navigation("UserProducts");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Review", b =>
+                {
+                    b.Navigation("UserReviews");
                 });
 #pragma warning restore 612, 618
         }

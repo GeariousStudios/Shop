@@ -48,24 +48,25 @@ namespace Shop.api.Repositories
         public async Task<Review> CreateAsync(Review reviewModel)
         {
             await _context.Reviews.AddAsync(reviewModel);
+
             await _context.SaveChangesAsync();
 
             return reviewModel;
         }
 
-        public async Task<Review?> UpdateAsync(int id, UpdateReviewRequestDto reviewDto)
+        public async Task<Review?> UpdateAsync(int id, Review reviewModel)
         {
-            var existingReview = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+            var existingReview = await _context.Reviews.FindAsync(id);
 
             if (existingReview == null)
             {
                 return null;
             }
 
-            existingReview.Name = reviewDto.Name;
-            existingReview.Description = reviewDto.Description;
-            existingReview.ImageUrl = reviewDto.ImageUrl;
-            existingReview.Score = reviewDto.Score;
+            existingReview.Name = reviewModel.Name;
+            existingReview.Description = reviewModel.Description;
+            existingReview.ImageUrl = reviewModel.ImageUrl;
+            existingReview.Score = reviewModel.Score;
 
             await _context.SaveChangesAsync();
 

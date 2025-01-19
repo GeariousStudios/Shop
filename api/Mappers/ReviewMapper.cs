@@ -13,17 +13,31 @@ namespace Shop.api.Mappers
                 Name = reviewModel.Name,
                 Description = reviewModel.Description,
                 ImageUrl = reviewModel.ImageUrl,
+                ProductId = reviewModel.ProductId,
                 Score = reviewModel.Score,
             };
         }
 
-        public static Review ToReviewFromCreateDto(this CreateReviewRequestDto reviewDto)
+        public static Review ToReviewFromCreate(this CreateReviewDto reviewDto, int productId)
         {
             return new Review
             {
                 Name = reviewDto.Name,
                 Description = reviewDto.Description,
                 ImageUrl = reviewDto.ImageUrl,
+                ProductId = productId,
+                Score = reviewDto.Score,
+            };
+        }
+
+        public static Review ToReviewFromUpdate(this UpdateReviewDto reviewDto, int productId)
+        {
+            return new Review
+            {
+                Name = reviewDto.Name,
+                Description = reviewDto.Description,
+                ImageUrl = reviewDto.ImageUrl,
+                ProductId = productId,
                 Score = reviewDto.Score,
             };
         }

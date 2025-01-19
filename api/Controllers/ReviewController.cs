@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.api.Dtos;
+using Shop.api.Extensions;
 using Shop.api.Helpers;
 using Shop.api.Interfaces;
 using Shop.api.Mappers;
@@ -13,13 +14,19 @@ namespace Shop.api.Controllers
     [Route("api/[controller]")]
     public class ReviewController : ControllerBase
     {
-        private readonly UserManager<AppUser> _usermanager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IReviewRepository _reviewRepo;
+        private readonly IProductRepository _productRepo;
 
-        public ReviewController(UserManager<AppUser> userManager, IReviewRepository reviewRepo)
+        public ReviewController(
+            UserManager<AppUser> userManager,
+            IReviewRepository reviewRepo,
+            IProductRepository productRepo
+        )
         {
-            _usermanager = userManager;
+            _userManager = userManager;
             _reviewRepo = reviewRepo;
+            _productRepo = productRepo;
         }
 
         [HttpGet]
@@ -55,10 +62,11 @@ namespace Shop.api.Controllers
             return Ok(review.ToReviewDto());
         }
 
-        [HttpPost]
+        [HttpPost("{id:int}")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Review>>> Create(
-            [FromBody] CreateReviewRequestDto reviewDto
+            [FromRoute] int id,
+            CreateReviewDto reviewDto
         )
         {
             if (!ModelState.IsValid)
@@ -66,7 +74,25 @@ namespace Shop.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var reviewModel = reviewDto.ToReviewFromCreateDto();
+            var review = await _reviewRepo.GetByIdAsync(id);
+
+            if (review == null)
+            {
+                if (review == null)
+                {
+                    return BadRequest("Review does not exists");
+                }
+                else
+                {
+                    await _reviewRepo.CreateAsync(review);
+                }
+            }
+
+            var email = User.GetEmail();
+            var appUser = await _userManager.FindByEmailAsync(email);
+
+            var reviewModel = reviewDto.ToReviewFromCreate(review.Id);
+            reviewModel.AppUserId = appUser.Id;
 
             await _reviewRepo.CreateAsync(reviewModel);
 
@@ -82,7 +108,7 @@ namespace Shop.api.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Review>>> Update(
             [FromRoute] int id,
-            [FromBody] UpdateReviewRequestDto updateDto
+            [FromBody] UpdateReviewDto updateDto
         )
         {
             if (!ModelState.IsValid)
@@ -90,14 +116,14 @@ namespace Shop.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var reviewModel = await _reviewRepo.UpdateAsync(id, updateDto);
+            var review = await _reviewRepo.UpdateAsync(id, updateDto.ToReviewFromUpdate(id));
 
-            if (reviewModel == null)
+            if (review == null)
             {
-                return NotFound();
+                return NotFound("Review not found");
             }
 
-            return Ok(reviewModel.ToReviewDto());
+            return Ok(review.ToReviewDto());
         }
 
         [HttpDelete]

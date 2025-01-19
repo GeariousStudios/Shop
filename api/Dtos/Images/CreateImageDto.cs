@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shop.api.Dtos
 {
-    public class UpdateImageRequestDto
+    public class CreateImageDto
     {
         [Required]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 100 characters")]
