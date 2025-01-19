@@ -74,24 +74,24 @@ namespace Shop.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var review = await _reviewRepo.GetByIdAsync(id);
+            var product = await _productRepo.GetByIdAsync(id);
 
-            if (review == null)
+            if (product == null)
             {
-                if (review == null)
+                if (product == null)
                 {
-                    return BadRequest("Review does not exists");
+                    return BadRequest("Product does not exists");
                 }
                 else
                 {
-                    await _reviewRepo.CreateAsync(review);
+                    await _productRepo.CreateAsync(product);
                 }
             }
 
             var email = User.GetEmail();
             var appUser = await _userManager.FindByEmailAsync(email);
 
-            var reviewModel = reviewDto.ToReviewFromCreate(review.Id);
+            var reviewModel = reviewDto.ToReviewFromCreate(product.Id);
             reviewModel.AppUserId = appUser.Id;
 
             await _reviewRepo.CreateAsync(reviewModel);
