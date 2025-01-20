@@ -5,5 +5,6 @@ namespace Shop.api.Dtos
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
+        public string AppUserId { get; set; }
     }
 }

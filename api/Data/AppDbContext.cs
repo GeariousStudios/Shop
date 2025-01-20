@@ -10,42 +10,49 @@ namespace Shop.api.Data
         public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions)
             : base(dbContextOptions) { }
 
+        // Database tables.
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<UserProduct> UserProducts { get; set; }
-        public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserProduct>(u => u.HasKey(p => new { p.AppUserId, p.ProductId }));
-            builder.Entity<UserImage>(u => u.HasKey(p => new { p.AppUserId, p.ImageId }));
+            // Configure many-to-many relationships.
+            builder.Entity<ProductImage>().HasKey(pi => new { pi.ProductId, pi.ImageId });
 
             builder
-                .Entity<UserProduct>()
-                .HasOne(u => u.AppUser)
-                .WithMany(u => u.UserProducts)
-                .HasForeignKey(p => p.AppUserId);
+                .Entity<ProductImage>()
+                .HasOne(pi => pi.Product)
+                .WithMany(p => p.ProductImages)
+                .HasForeignKey(pi => pi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<UserProduct>()
-                .HasOne(u => u.Product)
-                .WithMany(u => u.UserProducts)
-                .HasForeignKey(p => p.ProductId);
+                .Entity<ProductImage>()
+                .HasOne(pi => pi.Image)
+                .WithMany(i => i.ProductImages)
+                .HasForeignKey(pi => pi.ImageId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ProductCategory>().HasKey(pc => new { pc.ProductId, pc.CategoryId });
 
             builder
-                .Entity<UserImage>()
-                .HasOne(u => u.AppUser)
-                .WithMany(u => u.UserImages)
-                .HasForeignKey(i => i.AppUserId);
+                .Entity<ProductCategory>()
+                .HasOne(pc => pc.Product)
+                .WithMany(p => p.ProductCategories)
+                .HasForeignKey(pi => pi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<UserImage>()
-                .HasOne(u => u.Image)
-                .WithMany(u => u.UserImages)
-                .HasForeignKey(i => i.ImageId);
+                .Entity<ProductCategory>()
+                .HasOne(pc => pc.Category)
+                .WithMany(c => c.ProductCategories)
+                .HasForeignKey(pc => pc.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
@@ -54,12 +61,6 @@ namespace Shop.api.Data
                     Id = "1",
                     Name = "Admin",
                     NormalizedName = "ADMIN",
-                },
-                new IdentityRole
-                {
-                    Id = "2",
-                    Name = "User",
-                    NormalizedName = "USER",
                 },
             };
             builder.Entity<IdentityRole>().HasData(roles);

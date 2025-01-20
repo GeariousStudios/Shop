@@ -53,9 +53,14 @@ namespace Shop.api.Repositories
             return productModel;
         }
 
-        public async Task<Product?> UpdateAsync(int id, UpdateProductRequestDto productDto)
+        public async Task<Product?> UpdateAsync(int id, UpdateProductDto productDto)
         {
-            var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var existingProduct = await _context
+                .Products.Include(p => p.ProductImages)
+                .ThenInclude(pi => pi.Image)
+                .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (existingProduct == null)
             {
@@ -64,10 +69,25 @@ namespace Shop.api.Repositories
 
             existingProduct.Name = productDto.Name;
             existingProduct.Description = productDto.Description;
-            existingProduct.ImageUrl = productDto.ImageUrl;
+
             existingProduct.Price = productDto.Price;
             existingProduct.Stock = productDto.Stock;
-            existingProduct.CategoryId = productDto.CategoryId;
+
+            // Update ProductImages.
+            existingProduct.ProductImages.Clear();
+            existingProduct.ProductImages = productDto
+                .ImageIds.Select(imageId => new ProductImage { ProductId = id, ImageId = imageId })
+                .ToList();
+
+            // Update ProductCategories.
+            existingProduct.ProductCategories.Clear();
+            existingProduct.ProductCategories = productDto
+                .CategoryIds.Select(categoryId => new ProductCategory
+                {
+                    ProductId = id,
+                    CategoryId = categoryId,
+                })
+                .ToList();
 
             await _context.SaveChangesAsync();
 

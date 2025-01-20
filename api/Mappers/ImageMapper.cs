@@ -12,12 +12,18 @@ namespace Shop.api.Mappers
                 Id = imageModel.Id,
                 Name = imageModel.Name,
                 ImageUrl = imageModel.ImageUrl,
+                AppUserId = imageModel.AppUserId,
             };
         }
 
-        public static Image ToImageFromCreateDto(this CreateImageRequestDto imageDto)
+        public static Image ToImageFromCreateDto(this CreateImageDto imageDto)
         {
-            return new Image { Name = imageDto.Name, ImageUrl = imageDto.ImageUrl };
+            return new Image
+            {
+                Name = imageDto.Name,
+                ImageUrl = imageDto.ImageUrl,
+                AppUserId = imageDto.AppUserId,
+            };
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Shop.api.Models.Controllers
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Category>>> Create(
-            [FromBody] CreateCategoryRequestDto categoryDto
+            [FromBody] CreateCategoryDto categoryDto
         )
         {
             if (!ModelState.IsValid)
@@ -64,12 +64,12 @@ namespace Shop.api.Models.Controllers
 
             var categoryModel = categoryDto.ToCategoryFromCreateDto();
 
-            await _categoryRepo.CreateAsync(categoryModel);
+            var createdCategory = await _categoryRepo.CreateAsync(categoryModel);
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = categoryModel.Id },
-                categoryModel.ToCategoryDto()
+                new { id = createdCategory.Id },
+                createdCategory.ToCategoryDto()
             );
         }
 
@@ -78,7 +78,7 @@ namespace Shop.api.Models.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Category>>> Update(
             [FromRoute] int id,
-            [FromBody] UpdateCategoryRequestDto updateDto
+            [FromBody] UpdateCategoryDto updateDto
         )
         {
             if (!ModelState.IsValid)

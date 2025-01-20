@@ -54,12 +54,6 @@ namespace Shop.Migrations
                             Id = "1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            Name = "User",
-                            NormalizedName = "USER"
                         });
                 });
 
@@ -242,6 +236,10 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -250,6 +248,8 @@ namespace Shop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Categories");
                 });
@@ -262,8 +262,9 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -274,6 +275,8 @@ namespace Shop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Images");
                 });
@@ -286,17 +289,12 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -312,42 +310,41 @@ namespace Shop.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Shop.api.Models.UserImage", b =>
+            modelBuilder.Entity("Shop.api.Models.ProductCategory", b =>
                 {
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
 
-                    b.HasKey("AppUserId", "ImageId");
+                    b.HasKey("ProductId", "ImageId");
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("UserImages");
-                });
-
-            modelBuilder.Entity("Shop.api.Models.UserProduct", b =>
-                {
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppUserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("UserProducts");
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -401,59 +398,92 @@ namespace Shop.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shop.api.Models.UserImage", b =>
+            modelBuilder.Entity("Shop.api.Models.Category", b =>
                 {
                     b.HasOne("Shop.api.Models.AppUser", "AppUser")
-                        .WithMany("UserImages")
+                        .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shop.api.Models.Image", "Image")
-                        .WithMany("UserImages")
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("AppUser");
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("Shop.api.Models.UserProduct", b =>
-                {
-                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
-                        .WithMany("UserProducts")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shop.api.Models.Product", "Product")
-                        .WithMany("UserProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Shop.api.Models.AppUser", b =>
-                {
-                    b.Navigation("UserImages");
-
-                    b.Navigation("UserProducts");
                 });
 
             modelBuilder.Entity("Shop.api.Models.Image", b =>
                 {
-                    b.Navigation("UserImages");
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Shop.api.Models.Product", b =>
                 {
-                    b.Navigation("UserProducts");
+                    b.HasOne("Shop.api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.ProductCategory", b =>
+                {
+                    b.HasOne("Shop.api.Models.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shop.api.Models.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.ProductImage", b =>
+                {
+                    b.HasOne("Shop.api.Models.Image", "Image")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shop.api.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Category", b =>
+                {
+                    b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Image", b =>
+                {
+                    b.Navigation("ProductImages");
+                });
+
+            modelBuilder.Entity("Shop.api.Models.Product", b =>
+                {
+                    b.Navigation("ProductCategories");
+
+                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }

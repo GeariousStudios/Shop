@@ -11,5 +11,12 @@ namespace Shop.api.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
+
+        // AppUser association.
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+
+        // Navigation property.
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
     }
 }

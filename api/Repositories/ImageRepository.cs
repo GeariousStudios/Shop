@@ -25,16 +25,6 @@ namespace Shop.api.Repositories
                 images = images.Where(i => i.Name.Contains(query.Name));
             }
 
-            if (!string.IsNullOrWhiteSpace(query.SortBy))
-            {
-                if (query.SortBy.Equals("CreatedAt", StringComparison.OrdinalIgnoreCase))
-                {
-                    images = query.IsDescending
-                        ? images.OrderByDescending(i => i.CreatedAt)
-                        : images.OrderBy(i => i.CreatedAt);
-                }
-            }
-
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
             return await images.Skip(skipNumber).Take(query.PageSize).ToListAsync();
@@ -53,7 +43,7 @@ namespace Shop.api.Repositories
             return imageModel;
         }
 
-        public async Task<Image?> UpdateAsync(int id, UpdateImageRequestDto imageDto)
+        public async Task<Image?> UpdateAsync(int id, UpdateImageDto imageDto)
         {
             var existingImage = await _context.Images.FirstOrDefaultAsync(i => i.Id == id);
 

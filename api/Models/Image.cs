@@ -11,7 +11,12 @@ namespace Shop.api.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public List<UserImage> UserImages { get; set; } = new List<UserImage>();
+
+        // AppUser association.
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+
+        // Navigation property
+        public List<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
     }
 }

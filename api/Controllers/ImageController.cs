@@ -57,7 +57,7 @@ namespace Shop.api.Controllers
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Image>>> Create(
-            [FromBody] CreateImageRequestDto imageDto
+            [FromBody] CreateImageDto imageDto
         )
         {
             if (!ModelState.IsValid)
@@ -67,12 +67,12 @@ namespace Shop.api.Controllers
 
             var imageModel = imageDto.ToImageFromCreateDto();
 
-            await _imageRepo.CreateAsync(imageModel);
+            var createdImage = await _imageRepo.CreateAsync(imageModel);
 
             return CreatedAtAction(
                 nameof(GetById),
-                new { id = imageModel.Id },
-                imageModel.ToImageDto()
+                new { id = createdImage.Id },
+                createdImage.ToImageDto()
             );
         }
 
@@ -81,7 +81,7 @@ namespace Shop.api.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Image>>> Update(
             [FromRoute] int id,
-            [FromBody] UpdateImageRequestDto updateDto
+            [FromBody] UpdateImageDto updateDto
         )
         {
             if (!ModelState.IsValid)

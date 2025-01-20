@@ -111,8 +111,6 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
-builder.Services.AddScoped<IUserImageRepository, UserImageRepository>();
-builder.Services.AddScoped<IUserProductRepository, UserProductRepository>();
 
 var app = builder.Build();
 

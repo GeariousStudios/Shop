@@ -8,8 +8,5 @@ namespace Shop.api.Models
         {
             get => Email;
         }
-
-        public List<UserImage> UserImages { get; set; } = new List<UserImage>();
-        public List<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
     }
 }

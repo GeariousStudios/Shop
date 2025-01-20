@@ -54,7 +54,7 @@ namespace Shop.api.Models.Controllers
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Product>>> Create(
-            [FromBody] CreateProductRequestDto productDto
+            [FromBody] CreateProductDto productDto
         )
         {
             if (!ModelState.IsValid)
@@ -78,7 +78,7 @@ namespace Shop.api.Models.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Product>>> Update(
             [FromRoute] int id,
-            [FromBody] UpdateProductRequestDto updateDto
+            [FromBody] UpdateProductDto updateDto
         )
         {
             if (!ModelState.IsValid)

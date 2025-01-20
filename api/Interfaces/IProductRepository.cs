@@ -12,7 +12,7 @@ namespace Shop.api.Interfaces
 
         Task<Product> CreateAsync(Product productModel);
 
-        Task<Product?> UpdateAsync(int id, UpdateProductRequestDto productDto);
+        Task<Product?> UpdateAsync(int id, UpdateProductDto productDto);
 
         Task<Product?> DeleteAsync(int id);
 

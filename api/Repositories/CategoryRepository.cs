@@ -53,7 +53,7 @@ namespace Shop.api.Repositories
             return categoryModel;
         }
 
-        public async Task<Category?> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto)
+        public async Task<Category?> UpdateAsync(int id, UpdateCategoryDto categoryDto)
         {
             var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 

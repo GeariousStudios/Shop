@@ -11,17 +11,20 @@ namespace Shop.api.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string? ImageUrl { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-
         public int Stock { get; set; }
-        public int CategoryId { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
-        public bool IsDeleted { get; set; }
 
-        public List<UserProduct> UserProducts { get; set; } = new List<UserProduct>();
+        // Navigation properties.
+        public List<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+        public List<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+        // AppUser association.
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
+
+        // Metadata.
+        public bool IsDeleted { get; set; } // If true, the product will be sent to archive.
     }
 }

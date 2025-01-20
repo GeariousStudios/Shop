@@ -12,7 +12,7 @@ namespace Shop.api.Interfaces
 
         Task<Category> CreateAsync(Category categoryModel);
 
-        Task<Category?> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto);
+        Task<Category?> UpdateAsync(int id, UpdateCategoryDto categoryDto);
 
         Task<Category?> DeleteAsync(int id);
 

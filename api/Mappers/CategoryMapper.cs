@@ -15,9 +15,14 @@ namespace Shop.api.Mappers
             };
         }
 
-        public static Category ToCategoryFromCreateDto(this CreateCategoryRequestDto categoryDto)
+        public static Category ToCategoryFromCreateDto(this CreateCategoryDto categoryDto)
         {
-            return new Category { Name = categoryDto.Name, Description = categoryDto.Description };
+            return new Category
+            {
+                Name = categoryDto.Name,
+                Description = categoryDto.Description,
+                AppUserId = categoryDto.AppUserId,
+            };
         }
     }
 }
