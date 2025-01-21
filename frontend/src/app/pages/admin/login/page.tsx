@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useAuth } from "../../../context/useAuth";
 import { useForm } from "react-hook-form";
@@ -16,13 +16,15 @@ type LoginFormsInputs = {
 };
 
 const validation = Yup.object().shape({
-  email: Yup.string().email().required("Username is required"),
-  password: Yup.string().required("Password is required"),
+  email: Yup.string().email(" ").required(" "),
+  password: Yup.string().required(" "),
 });
 
 const Login = (props: Props) => {
   const { loginUser } = useAuth();
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -34,7 +36,7 @@ const Login = (props: Props) => {
     if (isAuthenticated) {
       router.push("dashboard");
     } else {
-      console.error("Login failed. Please check your credentials.");
+      setErrorMessage("Invalid email or password. Please try again.");
     }
   };
   return (
@@ -50,6 +52,8 @@ const Login = (props: Props) => {
           <input type="password" {...register("password")} />
           {errors.password ? <p>{errors.password.message}</p> : ""}
         </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display login error */}
+        <br></br>
         <button className="submit-button" type="submit">
           Login
         </button>
