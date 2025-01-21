@@ -166,3 +166,6 @@ D:\Shop\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Shop\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Shop\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\Shop\obj\Debug\net9.0\Shop.sourcelink.json
+D:\Shop\bin\Debug\net9.0\frontend\package-lock.json
+D:\Shop\bin\Debug\net9.0\frontend\package.json
+D:\Shop\bin\Debug\net9.0\frontend\tsconfig.json

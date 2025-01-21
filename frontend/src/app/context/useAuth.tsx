@@ -10,8 +10,8 @@ import { loginAPI, registerAPI } from "../services/authService";
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
-  registerUser: (email: string, password: string) => void;
-  loginUser: (email: string, password: string) => void;
+  registerUser: (email: string, password: string) => Promise<boolean>;
+  loginUser: (email: string, password: string) => Promise<boolean>;
   logoutUser: () => void;
   isLoggedIn: () => boolean;
 };
@@ -37,34 +37,45 @@ export const UserProvider = ({ children }: Props) => {
     setIsReady(true);
   }, []);
 
-  const registerUser = async (email: string, password: string) => {
-    await registerAPI(email, password)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("token", res?.data.token);
-          const userObj = { email: res?.data.email };
-          localStorage.setItem("user", JSON.stringify(userObj));
-          setToken(res?.data.token!);
-          setUser(userObj!);
-          toast.success("User registered successfully");
-        }
-      })
-      .catch((e) => toast.warning("Server error occurred"));
+  const registerUser = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const res = await registerAPI(email, password); // Await the API call...
+      if (res && res.data) {
+        // If the API response contains the expected data.
+        localStorage.setItem("token", res.data.token);
+        const userObj = { email: res.data.email };
+        localStorage.setItem("user", JSON.stringify(userObj));
+        setToken(res.data.token);
+        setUser(userObj);
+        toast.success("Registered successfully!");
+        return true; // Return true to indicate success!
+      }
+      return false; // Return false if response is not as expected.
+    } catch (error) {
+      console.error("Register error:", error);
+      return false; // Return false to indicate failure.
+    }
   };
 
-  const loginUser = async (email: string, password: string) => {
-    await loginAPI(email, password)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("token", res?.data.token);
-          const userObj = { email: res?.data.email };
-          localStorage.setItem("user", JSON.stringify(userObj));
-          setToken(res?.data.token!);
-          setUser(userObj!);
-          toast.success("Login success!");
-        }
-      })
-      .catch((e) => toast.warning("Server error occurred"));
+  const loginUser = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const res = await loginAPI(email, password); // Await the API call...
+      if (res && res.data) {
+        // If the API response contains the expected data.
+        localStorage.setItem("token", res.data.token);
+        const userObj = { email: res.data.email };
+        localStorage.setItem("user", JSON.stringify(userObj));
+        setToken(res.data.token);
+        setUser(userObj);
+        toast.success("Login success!");
+        return true; // Return true to indicate success!
+      }
+      return false; // Return false if response is not as expected.
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Invalid credentials or account does not exist.");
+      return false; // Return false to indicate failure.
+    }
   };
 
   const isLoggedIn = () => {

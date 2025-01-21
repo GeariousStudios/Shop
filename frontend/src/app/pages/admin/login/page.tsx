@@ -20,7 +20,7 @@ const validation = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-const login = (props: Props) => {
+const Login = (props: Props) => {
   const { loginUser } = useAuth();
   const router = useRouter();
   const {
@@ -29,9 +29,13 @@ const login = (props: Props) => {
     formState: { errors },
   } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
 
-  const handleLogin = (form: LoginFormsInputs) => {
-    loginUser(form.email, form.password);
-    router.push("pages/admin/dashboard");
+  const handleLogin = async (form: LoginFormsInputs) => {
+    const isAuthenticated = await loginUser(form.email, form.password);
+    if (isAuthenticated) {
+      router.push("dashboard");
+    } else {
+      console.error("Login failed. Please check your credentials.");
+    }
   };
   return (
     <div className="login-container">
@@ -54,4 +58,4 @@ const login = (props: Props) => {
   );
 };
 
-export default login;
+export default Login;

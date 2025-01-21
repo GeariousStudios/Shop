@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\shop\\Shop.csproj": {}
+    "D:\\Shop\\Shop.csproj": {}
   },
   "projects": {
-    "D:\\shop\\Shop.csproj": {
+    "D:\\Shop\\Shop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\shop\\Shop.csproj",
+        "projectUniqueName": "D:\\Shop\\Shop.csproj",
         "projectName": "Shop",
-        "projectPath": "D:\\shop\\Shop.csproj",
+        "projectPath": "D:\\Shop\\Shop.csproj",
         "packagesPath": "C:\\Users\\Liam\\.nuget\\packages\\",
-        "outputPath": "D:\\shop\\obj\\",
+        "outputPath": "D:\\Shop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Liam\\AppData\\Roaming\\NuGet\\NuGet.Config"

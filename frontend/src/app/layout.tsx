@@ -1,4 +1,5 @@
 import React from "react";
+import { UserProvider } from "./context/useAuth";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div id="root">{children}</div>
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
