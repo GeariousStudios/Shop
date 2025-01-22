@@ -2,21 +2,33 @@
 
 import { useAuth } from "@/app/context/useAuth";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import "../../../globals.css";
 import Navbar from "@/app/components/admin/navbar";
+import Quill from "quill";
+
+type Product = {
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+};
 
 const AddProduct = () => {
-  const { user, isLoggedIn } = useAuth();
-  const router = useRouter();
-
-  const [formData, setFormData] = useState({
+  // Product related code.
+  const [formData, setFormData] = useState<Product>({
     title: "",
     description: "",
     price: "",
     category: "",
   });
+
+  // User related code.
+  const [productList, setProductList] = useState<Product[]>([]); // State to store added products.
+
+  const { user, isLoggedIn } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -28,6 +40,7 @@ const AddProduct = () => {
     return <p>Redirecting to login...</p>;
   }
 
+  // Input related code.
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -38,14 +51,42 @@ const AddProduct = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add logic to submit the product
-    console.log("Product submitted:", formData);
+    setProductList((prevList) => [...prevList, formData]);
+    console.log("Product added:", formData);
   };
+
+  // Quill-related code.
+  const quillRef = useRef<HTMLDivElement | null>(null);
+  const quillInstance = useRef<Quill | null>(null); // Store the Quill instance.
+
+  useEffect(() => {
+    if (quillRef.current && !quillInstance.current) {
+      quillInstance.current = new Quill(quillRef.current, {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline", "strike"], // Text formatting.
+            [{ list: "ordered" }, { list: "bullet" }], // Lists.
+            ["link" /*, "image"*/], // Links and images.
+          ],
+        },
+      });
+
+      // Capture editor content changes.
+      quillInstance.current.on("text-change", () => {
+        setFormData((prev) => ({
+          ...prev,
+          description: quillInstance.current!.root.innerHTML, // Store the HTML content.
+        }));
+      });
+    }
+  }, []);
 
   return (
     <>
       <Navbar />
       <div className={styles.page}>
+        {/* Add product form */}
         <div className={styles.productForm}>
           <h1>Lägg till ny produkt</h1>
           <form onSubmit={handleSubmit} className={styles.form}>
@@ -54,14 +95,10 @@ const AddProduct = () => {
               <input type="text" id="title" name="title" value={formData.title} onChange={handleInputChange} required />
             </div>
             <div className={styles.field}>
-              <label htmlFor="description">Produktbeskrivning</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                required
-              ></textarea>
+              <label htmlFor="description" className={styles.notRequired}>
+                Produktbeskrivning
+              </label>
+              <div ref={quillRef} id="description" className={styles.quillEditor}></div>
             </div>
             <div className={styles.field}>
               <label htmlFor="price">Pris</label>
@@ -86,9 +123,24 @@ const AddProduct = () => {
               />
             </div>
             <button type="submit" className={styles.submitButton}>
-              Add Product
+              Lägg till
+            </button>
+            <button type="submit" className={styles.previewButton}>
+              Förhandsgranska
             </button>
           </form>
+        </div>
+
+        {/* Product list */}
+        <div className={styles.productList}>
+          <h1>Produkter</h1>
+          <ul>
+            {productList.map((product, index) => (
+              <li key={index} className={styles.productItem}>
+                <strong>{product.title}</strong>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

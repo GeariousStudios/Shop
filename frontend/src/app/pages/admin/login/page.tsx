@@ -54,7 +54,6 @@ const Login = (props: Props) => {
           {errors.password ? <p>{errors.password.message}</p> : ""}
         </div>
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Display login error */}
-        <br></br>
         <button className={styles.submitButton} type="submit">
           Logga in
         </button>

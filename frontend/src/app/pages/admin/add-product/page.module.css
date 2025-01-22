@@ -1,14 +1,21 @@
+@import "quill/dist/quill.snow.css";
+
 .page {
-  display: grid;
-  place-items: center;
-  min-height: calc(100vh);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 7rem 0 7rem 0;
+  gap: 2rem;
+  min-height: calc(100vh - 18rem);
   background-color: #e2e2e2;
 }
 
+/* Product form styling */
 .productForm {
   padding: 2rem;
   width: 100%;
   max-width: 40rem;
+  min-height: 37.5rem;
 
   background: white;
   border-radius: 4px;
@@ -39,12 +46,19 @@
   color: #555;
 }
 
+.field label:not(.notRequired)::after {
+  content: "*";
+  margin-left: 0.25rem;
+  font-size: 1.1rem;
+  color: #ff0000;
+}
+
 .field input,
 .field textarea {
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 1rem;
   outline: none;
   background-color: #f9f9f9;
@@ -58,21 +72,18 @@
   background-color: #fff;
 }
 
-.field textarea {
-  resize: vertical;
-  min-height: 5rem;
-}
-
 .submitButton {
+  width: 100%;
   padding: 0.8rem;
+  margin-top: 1rem;
+
+  cursor: pointer;
   background-color: #007bff;
   color: white;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  border-radius: 4px;
 }
 
 .submitButton:hover {
@@ -82,4 +93,91 @@
 
 .submitButton:active {
   background-color: #003f87;
+}
+
+.previewButton {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+
+  cursor: pointer;
+  background-color: white;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1.5px solid #007bff;
+  border-radius: 4px;
+}
+
+.previewButton:hover {
+  background-color: #f0f0f0;
+  transition: background-color 0.1s ease;
+}
+
+.previewButton:active {
+  background-color: #dadada;
+}
+
+/* Quill editor styling */
+.quillEditor {
+  height: auto;
+  max-height: 12rem;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.quillEditor:focus-within {
+  border-color: #0070f3;
+  background-color: #fff;
+}
+
+/* Product list styling */
+.productList {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 2rem;
+  width: 100%;
+  max-width: 20rem;
+  height: 37.5rem;
+
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.productList h1 {
+  margin-bottom: 2rem;
+
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.productList ul {
+  list-style: none;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.productItem {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.productItem:last-child {
+  border-bottom: none;
+}
+
+.productItem strong {
+  display: block;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.25rem;
+  color: #007bff;
 }

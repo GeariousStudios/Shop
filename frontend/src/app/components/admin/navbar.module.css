@@ -3,19 +3,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: auto;
-  padding-left: 2rem;
+  height: 4rem;
 
   background-color: #333;
   color: white;
 }
 
 .navbarBrand {
-  padding: 1rem;
+  padding: 1.325rem 1rem 1rem 1.325rem;
 
   cursor: pointer;
   font-size: 1.5rem;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .navbarLinks {
@@ -27,7 +27,7 @@
 
 .navbarLinks > li {
   position: relative;
-  padding: 1.25rem;
+  padding: 1.325rem;
 }
 
 .navbarLinks > li:hover {
@@ -54,6 +54,7 @@
   border: none;
   color: white;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
 .dropdownButton::after {
