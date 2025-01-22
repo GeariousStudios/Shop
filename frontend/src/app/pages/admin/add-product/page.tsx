@@ -17,28 +17,13 @@ type Product = {
 
 const AddProduct = () => {
   // Product related code.
+  const [productList, setProductList] = useState<Product[]>([]); // State to store added products.
   const [formData, setFormData] = useState<Product>({
     title: "",
     description: "",
     price: "",
     category: "",
   });
-
-  // User related code.
-  const [productList, setProductList] = useState<Product[]>([]); // State to store added products.
-
-  const { user, isLoggedIn } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/pages/admin/login");
-    }
-  }, [isLoggedIn, router]);
-
-  if (!user) {
-    return <p>Redirecting to login...</p>;
-  }
 
   // Input related code.
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -64,11 +49,7 @@ const AddProduct = () => {
       quillInstance.current = new Quill(quillRef.current, {
         theme: "snow",
         modules: {
-          toolbar: [
-            ["bold", "italic", "underline", "strike"], // Text formatting.
-            [{ list: "ordered" }, { list: "bullet" }], // Lists.
-            ["link" /*, "image"*/], // Links and images.
-          ],
+          toolbar: [["bold", "italic", "underline", { list: "ordered" }, { list: "bullet" }, "link"]],
         },
       });
 
@@ -81,6 +62,20 @@ const AddProduct = () => {
       });
     }
   }, []);
+
+  // User related code (needs to be before return statement).
+  const { user, isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/pages/admin/login");
+    }
+  }, [isLoggedIn, router]);
+
+  if (!user) {
+    return <p>Redirecting to login...</p>;
+  }
 
   return (
     <>
@@ -138,9 +133,18 @@ const AddProduct = () => {
             {productList.map((product, index) => (
               <li key={index} className={styles.productItem}>
                 <strong>{product.title}</strong>
+                <button type="submit" className={styles.editButton}>
+                  <img src="/edit.svg" alt="Edit" />
+                </button>
               </li>
             ))}
           </ul>
+          <button type="submit" className={styles.submitButton}>
+            Publicera alla
+          </button>
+          <button type="submit" className={styles.previewButton}>
+            Publicera valda
+          </button>
         </div>
       </div>
     </>

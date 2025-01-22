@@ -23,8 +23,8 @@ const Dashboard = () => {
 
   return (
     <>
+      <Navbar />
       <div className={styles.page}>
-        <Navbar />
         <p>Content</p>
       </div>
     </>
