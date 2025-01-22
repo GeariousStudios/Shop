@@ -5,7 +5,8 @@ import * as Yup from "yup";
 import { useAuth } from "../../../context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import "./page.css";
+import styles from "./page.module.css";
+import "../../../globals.css";
 import { useRouter } from "next/navigation";
 
 interface Props {}
@@ -36,26 +37,26 @@ const Login = (props: Props) => {
     if (isAuthenticated) {
       router.push("dashboard");
     } else {
-      setErrorMessage("Invalid email or password. Please try again.");
+      setErrorMessage("Fel mejladress eller lösenord. Var god försök igen.");
     }
   };
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit(handleLogin)}>
-        <div className="form-group">
-          <label>Email</label>
+    <div className={styles.page}>
+      <form className={styles.loginForm} onSubmit={handleSubmit(handleLogin)}>
+        <div className={styles.formGroup}>
+          <label>Mejladress</label>
           <input type="email" {...register("email")} />
           {errors.email ? <p>{errors.email.message}</p> : ""}
         </div>
-        <div className="form-group">
-          <label>Password</label>
+        <div className={styles.formGroup}>
+          <label>Lösenord</label>
           <input type="password" {...register("password")} />
           {errors.password ? <p>{errors.password.message}</p> : ""}
         </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display login error */}
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Display login error */}
         <br></br>
-        <button className="submit-button" type="submit">
-          Login
+        <button className={styles.submitButton} type="submit">
+          Logga in
         </button>
       </form>
     </div>
