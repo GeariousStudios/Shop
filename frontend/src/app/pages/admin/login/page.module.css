@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #e2e2e2;
 }
 
@@ -52,4 +52,8 @@
 .submitButton:hover {
   background-color: #0056b3;
   transition: background-color 0.1s ease;
+}
+
+.submitButton:active {
+  background-color: #003f87;
 }

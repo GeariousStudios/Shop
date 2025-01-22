@@ -1,0 +1,85 @@
+.page {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh);
+  background-color: #e2e2e2;
+}
+
+.productForm {
+  padding: 2rem;
+  width: 100%;
+  max-width: 40rem;
+
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.productForm h1 {
+  margin-bottom: 2rem;
+
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.625rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background-color: #f9f9f9;
+  transition: border-color 0.1s ease;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #0070f3;
+  background-color: #fff;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.submitButton {
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+  transition: background-color 0.1s ease;
+}
+
+.submitButton:active {
+  background-color: #003f87;
+}
