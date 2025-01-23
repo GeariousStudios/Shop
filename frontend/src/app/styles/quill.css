@@ -1,0 +1,195 @@
+/* - Text editor - */
+.ql-editor {
+  height: 8rem;
+  border-radius: 24px;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.ql-editor:focus-within {
+  border-color: #0070f3;
+  background-color: #fff;
+}
+
+.ql-snow {
+  border-radius: 24px;
+}
+
+/* - Font button - */
+/* Button. */
+.ql-snow .ql-picker.ql-font {
+  width: 2.75rem;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label {
+  padding: 0;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+  content: "\00A0\270E";
+  font-size: 1.1rem;
+}
+
+/* - Header button - */
+/* Button. */
+.ql-snow .ql-picker.ql-header {
+  width: 2.4rem;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label {
+  padding: 0;
+}
+
+/* Options. */
+.ql-snow .ql-picker.ql-header .ql-picker-label::before {
+  content: "\00A0\00A0\00B6";
+  font-size: 0.9rem;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value]::before {
+  content: "\00A0\00A0\00B6";
+  font-size: 0.9rem;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: "Rubrik 1";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: "Rubrik 2";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: "Rubrik 3";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: "Rubrik 4";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: "Rubrik 5";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: "Rubrik 6";
+}
+
+/* - Button tooltips - */
+.ql-snow .ql-picker.ql-font,
+.ql-snow .ql-picker.ql-header,
+.ql-snow .ql-bold,
+.ql-snow .ql-italic,
+.ql-snow .ql-underline,
+.ql-snow .ql-strike,
+.ql-snow .ql-color,
+.ql-snow .ql-background,
+.ql-snow .ql-align,
+.ql-snow .ql-indent,
+.ql-snow .ql-list,
+.ql-snow .ql-link {
+  position: relative;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::after,
+.ql-snow .ql-picker.ql-header .ql-picker-label::after,
+.ql-snow .ql-bold::after,
+.ql-snow .ql-italic::after,
+.ql-snow .ql-underline::after,
+.ql-snow .ql-strike::after,
+.ql-snow .ql-color::after,
+.ql-snow .ql-background::after,
+.ql-snow .ql-align::after,
+.ql-snow .ql-indent::after,
+.ql-snow .ql-list::after,
+.ql-snow .ql-link::after {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000000be;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label:hover::after,
+.ql-snow .ql-picker.ql-header .ql-picker-label:hover::after,
+.ql-snow .ql-bold:hover::after,
+.ql-snow .ql-italic:hover::after,
+.ql-snow .ql-underline:hover::after,
+.ql-snow .ql-strike:hover::after,
+.ql-snow .ql-color:hover::after,
+.ql-snow .ql-background:hover::after,
+.ql-snow .ql-align:hover::after,
+.ql-snow .ql-indent:hover::after,
+.ql-snow .ql-list:hover::after,
+.ql-snow .ql-link:hover::after {
+  opacity: 1;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::after {
+  content: "Teckensnitt";
+  bottom: 150%;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label::after {
+  content: "Format";
+  bottom: 150%;
+}
+
+.ql-snow .ql-bold::after {
+  content: "Fetstil";
+  bottom: 142%;
+}
+
+.ql-snow .ql-italic::after {
+  content: "Kursiv stil";
+  bottom: 142%;
+}
+
+.ql-snow .ql-underline::after {
+  content: "Understruken";
+  bottom: 142%;
+}
+
+.ql-snow .ql-strike::after {
+  content: "Genomstruken";
+  bottom: 142%;
+}
+
+.ql-snow .ql-color::after {
+  content: "Textfärg";
+  bottom: 142%;
+}
+
+.ql-snow .ql-background::after {
+  content: "Bakgrundsfärg";
+  bottom: 142%;
+}
+
+.ql-snow .ql-align::after {
+  content: "Justera";
+  bottom: 142%;
+}
+
+.ql-snow .ql-indent::after {
+  content: "Justera indrag";
+  bottom: 142%;
+}
+
+.ql-snow .ql-list::after {
+  content: "Lista";
+  bottom: 142%;
+}
+
+.ql-snow .ql-link::after {
+  content: "Infoga länk";
+  bottom: 142%;
+}

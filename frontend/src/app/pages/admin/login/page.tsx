@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./page.module.css";
 import "@/app/styles/globals.css";
-import "@/app/styles/buttons.css";
+import "@/app/styles/admin/buttons.css";
 import { useRouter } from "next/navigation";
 
 interface Props {}

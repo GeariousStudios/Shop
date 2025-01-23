@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import "@/app/styles/globals.css";
-import "@/app/styles/buttons.css";
+import "@/app/styles/fonts.css";
+import "@/app/styles/quill.css";
+import "@/app/styles/admin/buttons.css";
 import Navbar from "@/app/components/admin/navbar";
 import Quill from "quill";
 
@@ -29,10 +31,18 @@ const AddProduct = () => {
   // Input related code.
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "price") {
+      const parsedValue = value === "" ? "" : Math.max(0, parseFloat(value)).toString();
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: parsedValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,22 +56,55 @@ const AddProduct = () => {
   const quillInstance = useRef<Quill | null>(null); // Store the Quill instance.
 
   useEffect(() => {
-    if (quillRef.current && !quillInstance.current) {
-      quillInstance.current = new Quill(quillRef.current, {
-        theme: "snow",
-        modules: {
-          toolbar: [["bold", "italic", "underline", { list: "ordered" }, { list: "bullet" }, "link"]],
-        },
-      });
-
-      // Capture editor content changes.
-      quillInstance.current.on("text-change", () => {
-        setFormData((prev) => ({
-          ...prev,
-          description: quillInstance.current!.root.innerHTML, // Store the HTML content.
-        }));
-      });
+    if (!quillRef.current || quillInstance.current) {
+      return;
     }
+
+    const FontAttributor = Quill.import("attributors/class/font") as any;
+    FontAttributor.whitelist = [
+      "lato",
+      "arial",
+      "comic-sans",
+      "courier",
+      "georgia",
+      "helvetica",
+      "roboto",
+      "times-new-roman",
+      "trebuchet",
+      "verdana",
+    ];
+    Quill.register(FontAttributor as any, true);
+
+    quillInstance.current = new Quill(quillRef.current, {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          {
+            font: FontAttributor.whitelist,
+          },
+          { header: [1, 2, 3, 4, 5, 6, false] },
+          "bold",
+          "italic",
+          "underline",
+          "strike",
+          { color: [] },
+          { background: [] },
+          { align: [] },
+          { indent: "-1" },
+          { indent: "+1" },
+          { list: "ordered" },
+          { list: "bullet" },
+          "link",
+        ],
+      },
+    });
+
+    quillInstance.current.on("text-change", () => {
+      setFormData((prev) => ({
+        ...prev,
+        description: quillInstance.current!.root.innerHTML,
+      }));
+    });
   }, []);
 
   // User related code (needs to be before return statement).
@@ -87,14 +130,14 @@ const AddProduct = () => {
           <h1>Lägg till ny produkt</h1>
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.field}>
-              <label htmlFor="title">Produktnamn</label>
+              <label htmlFor="title">Rubrik</label>
               <input type="text" id="title" name="title" value={formData.title} onChange={handleInputChange} required />
             </div>
             <div className={styles.field}>
               <label htmlFor="description" className={styles.notRequired}>
-                Produktbeskrivning
+                Beskrivning
               </label>
-              <div ref={quillRef} id="description" className={styles.quillEditor}></div>
+              <div ref={quillRef} id="description"></div>
             </div>
             <div className={styles.field}>
               <label htmlFor="price">Pris</label>
@@ -103,7 +146,19 @@ const AddProduct = () => {
                 id="price"
                 name="price"
                 value={formData.price}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    price: value === "" || parseFloat(value) >= 0 ? value : "0", // Ensure positive value.
+                  }));
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "-" || e.key === "e" || e.key === "+") {
+                    e.preventDefault();
+                  }
+                }}
+                min="0" // Prevent the stepper from going below 0.
                 required
               />
             </div>
