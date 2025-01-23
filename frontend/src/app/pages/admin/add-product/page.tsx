@@ -4,7 +4,8 @@ import { useAuth } from "@/app/context/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
-import "../../../globals.css";
+import "@/app/styles/globals.css";
+import "@/app/styles/buttons.css";
 import Navbar from "@/app/components/admin/navbar";
 import Quill from "quill";
 
@@ -117,10 +118,10 @@ const AddProduct = () => {
                 required
               />
             </div>
-            <button type="submit" className={styles.submitButton}>
+            <button type="submit" className="addProductButton">
               Lägg till
             </button>
-            <button type="submit" className={styles.previewButton}>
+            <button type="submit" className="previewProductButton">
               Förhandsgranska
             </button>
           </form>
@@ -133,16 +134,16 @@ const AddProduct = () => {
             {productList.map((product, index) => (
               <li key={index} className={styles.productItem}>
                 <strong>{product.title}</strong>
-                <button type="submit" className={styles.editButton}>
+                <button type="submit" className="editButton">
                   <img src="/edit.svg" alt="Edit" />
                 </button>
               </li>
             ))}
           </ul>
-          <button type="submit" className={styles.submitButton}>
+          <button type="submit" className="publishAllButton">
             Publicera alla
           </button>
-          <button type="submit" className={styles.previewButton}>
+          <button type="submit" className="publishSelectedButton">
             Publicera valda
           </button>
         </div>

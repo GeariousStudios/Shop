@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import "./globals.css";
+import "./styles/globals.css";
 
 export default function Home() {
   const router = useRouter();

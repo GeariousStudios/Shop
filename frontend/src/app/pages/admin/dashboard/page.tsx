@@ -4,7 +4,7 @@ import { useAuth } from "@/app/context/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import styles from "./page.module.css";
-import "../../../globals.css";
+import "@/app/styles/globals.css";
 import Navbar from "@/app/components/admin/navbar";
 
 const Dashboard = () => {

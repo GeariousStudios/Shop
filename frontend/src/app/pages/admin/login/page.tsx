@@ -6,7 +6,8 @@ import { useAuth } from "../../../context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./page.module.css";
-import "../../../globals.css";
+import "@/app/styles/globals.css";
+import "@/app/styles/buttons.css";
 import { useRouter } from "next/navigation";
 
 interface Props {}
@@ -54,7 +55,7 @@ const Login = (props: Props) => {
           {errors.password ? <p>{errors.password.message}</p> : ""}
         </div>
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>} {/* Display login error */}
-        <button className={styles.submitButton} type="submit">
+        <button className="loginButton" type="submit">
           Logga in
         </button>
       </form>

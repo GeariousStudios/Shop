@@ -73,52 +73,6 @@
   background-color: #fff;
 }
 
-.submitButton {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1rem;
-
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-}
-
-.submitButton:hover {
-  background-color: #0056b3;
-  transition: background-color 0.1s ease;
-}
-
-.submitButton:active {
-  background-color: #003f87;
-}
-
-.previewButton {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1rem;
-
-  cursor: pointer;
-  background-color: white;
-  color: #007bff;
-  font-size: 1rem;
-  font-weight: bold;
-  border: 1.5px solid #007bff;
-  border-radius: 4px;
-}
-
-.previewButton:hover {
-  background-color: rgba(245, 245, 245, 1);
-  transition: background-color 0.1s ease;
-}
-
-.previewButton:active {
-  background-color: rgba(240, 240, 240, 1);
-}
-
 /* Quill editor styling */
 .quillEditor {
   height: auto;
@@ -185,19 +139,4 @@
   text-overflow: ellipsis;
   font-size: 1.25rem;
   color: #007bff;
-}
-
-.editButton {
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.8rem;
-  margin-top: 1rem;
-
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
 }
