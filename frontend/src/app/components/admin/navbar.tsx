@@ -1,9 +1,15 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styles from "./navbar.module.css";
+import "@/app/styles/admin/buttons.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/useAuth";
+import { Box, ChartColumnStacked, User, ExternalLink } from "lucide-react";
 
-const Navbar = () => {
+interface NavbarProps {
+  children: ReactNode;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ children }) => {
   const { user, logoutUser } = useAuth();
   const router = useRouter();
 
@@ -13,57 +19,51 @@ const Navbar = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <nav className={styles.navbar}>
-        <div className={styles.navbarBrand} onClick={() => router.push("/pages/admin/dashboard")}>
-          Admin Dashboard
-        </div>
-        <ul className={styles.navbarLinks}>
-          {/* Produkter */}
-          <li className={styles.dropdown}>
-            <button className={styles.dropdownButton}>Produkter</button>
-            <ul className={styles.dropdownMenu}>
-              <li className={styles.hoverable} onClick={() => router.push("/pages/admin/add-product")}>
-                Lägg till ny produkt
-              </li>
-              <li className={styles.hoverable} onClick={() => router.push("/pages/admin/view-products")}>
-                Visa/redigera produkter
-              </li>
-            </ul>
+    <>
+      {/* Top bar */}
+      <div className={styles.navbarTop}>
+        <ul className={styles.topListRight}>
+          <li>
+            <p>
+              Välkommen <b>{user?.email}</b>!
+            </p>
           </li>
-          {/* Kategorier */}
-          <li className={styles.dropdown}>
-            <button className={styles.dropdownButton}>Kategorier</button>
-            <ul className={styles.dropdownMenu}>
-              <li className={styles.hoverable} onClick={() => router.push("/pages/admin/add-product")}>
-                Lägg till ny kategori
-              </li>
-              <li className={styles.hoverable} onClick={() => router.push("/pages/admin/view-products")}>
-                Visa/redigera kategorier
-              </li>
-            </ul>
-          </li>
-          {/* Bildbibliotek */}
-          <li className={styles.noDropdown} onClick={() => router.push("/pages/admin/media")}>
-            Bildbibliotek
-          </li>
-          {/* Användare */}
-          <li className={styles.dropdown}>
-            <button className={styles.dropdownButton}>{user?.email}</button>
-            <ul className={styles.dropdownMenu}>
-              <li className={styles.hoverable} onClick={() => router.push("/pages/admin/settings")}>
-                Inställningar
-              </li>
-              <li className={styles.centered}>
-                <button className={styles.logoutButton} onClick={handleLogout}>
-                  Logga ut
-                </button>
-              </li>
-            </ul>
+          <User className={styles.userIcon} onClick={() => router.push("/pages/admin/settings")} />
+        </ul>
+
+        <ul className={styles.topListLeft}>
+          <li onClick={() => router.push("/pages/admin/settings")}>
+            <ExternalLink className={styles.openShopIcon} />
+            Se din butik
           </li>
         </ul>
-      </nav>
-    </div>
+      </div>
+
+      {/* Sidebar */}
+
+      <div className={styles.navbarSide}>
+        <ul className={styles.sideList}>
+          <img
+            src="/images/illuminealogo.svg"
+            alt="Illuminea Logo"
+            className={styles.logo}
+            onClick={() => router.push("/pages/admin/dashboard")}
+          />
+          <h6>HANTERA</h6>
+          <li className={styles.hoverable} onClick={() => router.push("/pages/admin/add-product")}>
+            <Box className={styles.sideListIcon} />
+            Produkter
+          </li>
+          <li className={styles.hoverable} onClick={() => router.push("/pages/admin/add-product")}>
+            <ChartColumnStacked className={styles.sideListIcon} />
+            Kategorier
+          </li>
+        </ul>
+      </div>
+
+      {/* Content */}
+      <div className={styles.content}>{children}</div>
+    </>
   );
 };
 

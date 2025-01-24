@@ -10,27 +10,44 @@ import "@/app/styles/quill.css";
 import "@/app/styles/admin/buttons.css";
 import Navbar from "@/app/components/admin/navbar";
 import Quill from "quill";
+import ImageUploadBox from "@/app/components/admin/imageUploadBox";
 
 type Product = {
   title: string;
   description: string;
   price: string;
   category: string;
+  variants: string;
 };
 
 const AddProduct = () => {
   // Product related code.
-  const [productList, setProductList] = useState<Product[]>([]); // State to store added products.
   const [formData, setFormData] = useState<Product>({
     title: "",
     description: "",
     price: "",
     category: "",
+    variants: "",
   });
 
+  // Image upload code.
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleAddImage = (file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+    setImages((prev) => [...prev, imageUrl]);
+  };
+
   // Input related code.
+  const [isVariantsEnabled, setIsVariantsEnabled] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    if (name === "variants") {
+      setIsVariantsEnabled(!isVariantsEnabled);
+    }
+
     if (name === "price") {
       const parsedValue = value === "" ? "" : Math.max(0, parseFloat(value)).toString();
       setFormData((prevData) => ({
@@ -47,8 +64,6 @@ const AddProduct = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setProductList((prevList) => [...prevList, formData]);
-    console.log("Product added:", formData);
   };
 
   // Quill-related code.
@@ -123,86 +138,121 @@ const AddProduct = () => {
 
   return (
     <>
-      <Navbar />
-      <div className={styles.page}>
-        {/* Add product form */}
-        <div className={styles.productForm}>
-          <h1>Lägg till ny produkt</h1>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.field}>
-              <label htmlFor="title">Rubrik</label>
-              <input type="text" id="title" name="title" value={formData.title} onChange={handleInputChange} required />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="description" className={styles.notRequired}>
-                Beskrivning
-              </label>
-              <div ref={quillRef} id="description"></div>
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="price">Pris</label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    price: value === "" || parseFloat(value) >= 0 ? value : "0", // Ensure positive value.
-                  }));
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "-" || e.key === "e" || e.key === "+") {
-                    e.preventDefault();
-                  }
-                }}
-                min="0" // Prevent the stepper from going below 0.
-                required
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="category">Kategorier</label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <button type="submit" className="addProductButton">
-              Lägg till
-            </button>
-            <button type="submit" className="previewProductButton">
-              Förhandsgranska
-            </button>
-          </form>
-        </div>
+      <Navbar>
+        <div className={styles.page}>
+          {/* Add product form */}
+          <div className={styles.productForm}>
+            <h3>Lägg till produkt</h3>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              <div className={styles.titleAndPrice}>
+                <div className={styles.field}>
+                  <label>Rubrik</label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <h5>Namnge produkt</h5>
+                </div>
 
-        {/* Product list */}
-        <div className={styles.productList}>
-          <h1>Produkter</h1>
-          <ul>
-            {productList.map((product, index) => (
-              <li key={index} className={styles.productItem}>
-                <strong>{product.title}</strong>
-                <button type="submit" className="editButton">
-                  <img src="/edit.svg" alt="Edit" />
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button type="submit" className="publishAllButton">
-            Publicera alla
-          </button>
-          <button type="submit" className="publishSelectedButton">
-            Publicera valda
-          </button>
+                {!isVariantsEnabled && (
+                  <div className={styles.field}>
+                    <label>Pris</label>
+                    <div className={styles.price}>
+                      <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        value={formData.price}
+                        onChange={(e) => {
+                          let value = e.target.value;
+
+                          if (value.startsWith("0") && value.length > 1) {
+                            value = value.replace(/^0+/, "");
+                          }
+
+                          value = value === "" || parseFloat(value) > 0 ? value : "1";
+
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            price: value,
+                          }));
+                        }}
+                        onKeyDown={(e) => {
+                          // Prevent invalid key inputs
+                          if (e.key === "-" || e.key === "e" || e.key === "+" || e.key === "." || e.key === ",") {
+                            e.preventDefault();
+                          }
+                        }}
+                        min="0" // Prevent the stepper from going below 0.
+                        required
+                      />
+                      <h6>SEK</h6>
+                    </div>
+                    <h5>Ange pris</h5>
+                  </div>
+                )}
+              </div>
+
+              {/* Picture section. */}
+              <div className={styles.field}>
+                <label className={styles.notRequired}>Bilder</label>
+                <div className={styles.imageContainer}>
+                  {images.map((image, index) => (
+                    <ImageUploadBox key={index} image={image} onUpload={() => {}} />
+                  ))}
+                  <ImageUploadBox onUpload={handleAddImage} />
+                </div>
+              </div>
+
+              {/* Description section. */}
+              <div className={styles.field}>
+                <label className={styles.notRequired}>Beskrivning</label>
+                <div ref={quillRef} id="description"></div>
+                <h5>Beskriv produkten</h5>
+              </div>
+
+              <div className={styles.field}>
+                <label>Kategorier</label>
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                />
+                <h5>Ange i vilka kategorier som produkten kan hittas</h5>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.notRequired}>Produktvarianter</label>
+                <div className={styles.checkbox}>
+                  <input
+                    type="checkbox"
+                    id="variants"
+                    name="variants"
+                    value={formData.variants}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <h6>Lägg till</h6>
+                </div>
+                <h5>Aktivera om det finns olika varianter av produkten</h5>
+              </div>
+              <button type="submit" className="addProductButton">
+                Lägg till
+              </button>
+              <button type="submit" className="previewProductButton">
+                Förhandsgranska
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      </Navbar>
     </>
   );
 };

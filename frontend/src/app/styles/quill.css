@@ -1,19 +1,44 @@
+@import "quill/dist/quill.snow.css";
+
 /* - Text editor - */
-.ql-editor {
-  height: 8rem;
-  border-radius: 24px;
-  overflow: hidden;
-  overflow-y: auto;
-  background-color: #f9f9f9;
+.ql-container,
+.ql-toolbar {
+  border: none !important;
 }
 
-.ql-editor:focus-within {
-  border-color: #0070f3;
+.ql-container {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  /* box-shadow: 0px 1px 0 rgb(0, 0, 0, 0.1); */
+  border: 1px solid #e2e2e2 !important;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-left: 1px solid #e2e2e2 !important;
+  border-top: 1px solid #e2e2e2 !important;
+  border-right: 1px solid #e2e2e2 !important;
+  border-bottom: 1px solid #e2e2e200 !important;
+}
+
+.ql-editor {
+  min-height: 8rem;
+  max-height: 16rem;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  overflow: hidden;
+  overflow-y: auto;
   background-color: #fff;
 }
 
-.ql-snow {
-  border-radius: 24px;
+.ql-container:focus-within {
+  border-color: #268000 !important;
+}
+
+.ql-toolbar:focus-within {
+  border-color: #268000 !important;
+  border-bottom: 1px solid #268000 !important;
 }
 
 /* - Font button - */
@@ -100,8 +125,11 @@
 .ql-snow .ql-strike::after,
 .ql-snow .ql-color::after,
 .ql-snow .ql-background::after,
-.ql-snow .ql-align::after,
-.ql-snow .ql-indent::after,
+.ql-snow .ql-align .ql-picker-label[aria-expanded="false"]::after,
+.ql-snow .ql-align.ql-expanded:hover .ql-picker-label::after,
+.ql-snow .ql-align .ql-picker-item::after,
+.ql-snow .ql-indent[value="-1"]::after,
+.ql-snow .ql-indent[value="+1"]::after,
 .ql-snow .ql-list::after,
 .ql-snow .ql-link::after {
   position: absolute;
@@ -127,8 +155,11 @@
 .ql-snow .ql-strike:hover::after,
 .ql-snow .ql-color:hover::after,
 .ql-snow .ql-background:hover::after,
-.ql-snow .ql-align:hover::after,
-.ql-snow .ql-indent:hover::after,
+.ql-snow .ql-align .ql-picker-label[aria-expanded="false"]:hover::after,
+.ql-snow .ql-align.ql-expanded:hover .ql-picker-label:hover::after,
+.ql-snow .ql-align .ql-picker-item:hover:hover::after,
+.ql-snow .ql-indent[value="-1"]:hover::after,
+.ql-snow .ql-indent[value="+1"]:hover::after,
 .ql-snow .ql-list:hover::after,
 .ql-snow .ql-link:hover::after {
   opacity: 1;
@@ -174,18 +205,53 @@
   bottom: 142%;
 }
 
-.ql-snow .ql-align::after {
+.ql-snow .ql-align .ql-picker-label[aria-expanded="false"]::after {
   content: "Justera";
+  bottom: 150%;
+}
+
+.ql-snow .ql-align.ql-expanded:hover .ql-picker-label::after {
+  content: "Justera";
+  bottom: 150%;
+}
+
+.ql-snow .ql-align .ql-picker-options .ql-picker-item:first-child::after {
+  content: "Vänsterställ";
+  bottom: 132.75%;
+}
+
+.ql-snow .ql-align .ql-picker-item[data-value="center"]::after {
+  content: "Centrera";
+  bottom: 132.75%;
+}
+
+.ql-snow .ql-align .ql-picker-item[data-value="right"]::after {
+  content: "Högerställ";
+  bottom: 132.75%;
+}
+
+.ql-snow .ql-align .ql-picker-item[data-value="justify"]::after {
+  content: "Likställ";
+  bottom: 132.75%;
+}
+
+.ql-snow .ql-indent[value="-1"]::after {
+  content: "Minska indrag";
   bottom: 142%;
 }
 
-.ql-snow .ql-indent::after {
-  content: "Justera indrag";
+.ql-snow .ql-indent[value="+1"]::after {
+  content: "Öka indrag";
   bottom: 142%;
 }
 
-.ql-snow .ql-list::after {
-  content: "Lista";
+.ql-snow .ql-list[value="ordered"]::after {
+  content: "Ordnad lista";
+  bottom: 142%;
+}
+
+.ql-snow .ql-list[value="bullet"]::after {
+  content: "Oordnad lista";
   bottom: 142%;
 }
 
