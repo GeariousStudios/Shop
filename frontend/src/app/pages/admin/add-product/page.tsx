@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/app/context/useAuth";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import "@/app/styles/globals.css";
 import "@/app/styles/fonts.css";
@@ -11,6 +11,7 @@ import "@/app/styles/admin/buttons.css";
 import Navbar from "@/app/components/admin/navbar";
 import Quill from "quill";
 import ImageUploadBox from "@/app/components/admin/imageUploadBox";
+import Variant from "@/app/components/admin/variant";
 
 type Product = {
   title: string;
@@ -31,23 +32,44 @@ const AddProduct = () => {
   });
 
   // Image upload code.
-  const [images, setImages] = useState<string[]>([]);
+  type ImageWithAlt = {
+    url: string;
+    alt: string;
+  };
+
+  const [images, setImages] = useState<ImageWithAlt[]>([]);
 
   const handleAddImage = (file: File) => {
     const imageUrl = URL.createObjectURL(file);
-    setImages((prev) => [...prev, imageUrl]);
+    setImages((prev) => [...prev, { url: imageUrl, alt: "" }]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAltTextChange = (index: number, altText: string) => {
+    setImages((prev) => prev.map((image, i) => (i === index ? { ...image, alt: altText } : image)));
   };
 
   // Input related code.
   const [isVariantsEnabled, setIsVariantsEnabled] = useState(false);
+  const [variants, setVariants] = useState<{ title: string; options: string[] }[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    const isChecked = (e.target as HTMLInputElement).checked;
 
-    if (name === "variants") {
-      setIsVariantsEnabled(!isVariantsEnabled);
+    if (name === "variants" && type === "checkbox") {
+      setIsVariantsEnabled(isChecked);
+      if (isChecked) {
+        setVariants([{ title: "", options: [] }]);
+      } else {
+        setVariants([]);
+      }
+      return;
     }
-
     if (name === "price") {
       const parsedValue = value === "" ? "" : Math.max(0, parseFloat(value)).toString();
       setFormData((prevData) => ({
@@ -62,8 +84,13 @@ const AddProduct = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    const productData = {
+      ...formData,
+      variants,
+    };
   };
 
   // Quill-related code.
@@ -202,9 +229,15 @@ const AddProduct = () => {
                 <label className={styles.notRequired}>Bilder</label>
                 <div className={styles.imageContainer}>
                   {images.map((image, index) => (
-                    <ImageUploadBox key={index} image={image} onUpload={() => {}} />
+                    <ImageUploadBox
+                      key={index}
+                      image={image.url}
+                      onUpload={() => {}}
+                      onRemove={() => handleRemoveImage(index)}
+                      onAltTextChange={(altText) => handleAltTextChange(index, altText)}
+                    />
                   ))}
-                  <ImageUploadBox onUpload={handleAddImage} />
+                  <ImageUploadBox onUpload={handleAddImage} onRemove={() => {}} onAltTextChange={() => {}} />
                 </div>
               </div>
 
@@ -215,6 +248,7 @@ const AddProduct = () => {
                 <h5>Beskriv produkten</h5>
               </div>
 
+              {/* Category section. */}
               <div className={styles.field}>
                 <label>Kategorier</label>
                 <input
@@ -228,6 +262,7 @@ const AddProduct = () => {
                 <h5>Ange i vilka kategorier som produkten kan hittas</h5>
               </div>
 
+              {/* Product variants. */}
               <div className={styles.field}>
                 <label className={styles.notRequired}>Produktvarianter</label>
                 <div className={styles.checkbox}>
@@ -235,20 +270,25 @@ const AddProduct = () => {
                     type="checkbox"
                     id="variants"
                     name="variants"
+                    checked={isVariantsEnabled}
                     value={formData.variants}
                     onChange={handleInputChange}
-                    required
                   />
                   <h6>Lägg till</h6>
                 </div>
                 <h5>Aktivera om det finns olika varianter av produkten</h5>
               </div>
-              <button type="submit" className="addProductButton">
+
+              <div ref={containerRef}>
+                {isVariantsEnabled && <Variant variants={variants} setVariants={setVariants} />}
+              </div>
+
+              {/* <button type="submit" className="addProductButton">
                 Lägg till
               </button>
               <button type="submit" className="previewProductButton">
                 Förhandsgranska
-              </button>
+              </button> */}
             </form>
           </div>
         </div>

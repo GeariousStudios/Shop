@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 import styles from "./navbar.module.css";
 import "@/app/styles/admin/buttons.css";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ interface NavbarProps {
   children: ReactNode;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ children }) => {
+const Navbar: FC<NavbarProps> = ({ children }) => {
   const { user, logoutUser } = useAuth();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
               Välkommen <b>{user?.email}</b>!
             </p>
           </li>
-          <User className={styles.userIcon} onClick={() => router.push("/pages/admin/settings")} />
+          <User className={styles.userIcon} onClick={(handleLogout)} />
         </ul>
 
         <ul className={styles.topListLeft}>

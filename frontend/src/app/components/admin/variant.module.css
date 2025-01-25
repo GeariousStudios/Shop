@@ -1,0 +1,160 @@
+/* - Variant Row - */
+.variantRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+/* Input Group */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.5rem;
+}
+
+.inputGroup input[type="text"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+/* - Tags Container - */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.tagsContainer:focus-within {
+  border-color: #268000;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  background-color: #f3f3f3;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Buttons */
+.addVariantButton {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.75rem 1.5rem;
+  background-color: #6200ee;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addVariantButton:hover {
+  background-color: #4e00c1;
+}
+
+.removeVariantButton {
+  padding: 0.5rem;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.removeVariantButton:hover {
+  background-color: #e63939;
+}
+
+/* Variant Table */
+.variantTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 0.875rem;
+}
+
+.variantTable th,
+.variantTable td {
+  padding: 0.75rem;
+  border: 1px solid #e2e2e2;
+  text-align: left;
+}
+
+.variantTable th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+}
+
+.variantTable td input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Input Container */
+.inputContainer {
+  margin-top: 1rem;
+}
+
+.inputContainer input[type="text"] {
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  flex-grow: 1;
+  min-width: 100px;
+}
+
+.inputContainer input[type="text"]::placeholder {
+  color: #bbb;
+}
+
+/* Focus States */
+.inputGroup input[type="text"]:focus,
+.tagsContainer:focus-within {
+  border-color: #268000;
+  outline: none;
+}
+
+/* Chips/Tags */
+.tagsInput {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  background-color: white;
+}
