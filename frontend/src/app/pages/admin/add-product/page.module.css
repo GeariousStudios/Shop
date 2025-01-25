@@ -91,7 +91,7 @@
 
 .field input:focus,
 .field textarea:focus {
-  border-color: #268000;
+  border-color: #555;
 }
 
 /* - Checkbox - */
@@ -120,8 +120,8 @@
 }
 
 .checkbox input[type="checkbox"]:checked {
-  background-color: #268000;
-  border-color: #268000;
+  background-color: #555;
+  border-color: #555;
 }
 
 .checkbox input[type="checkbox"]:checked::after {

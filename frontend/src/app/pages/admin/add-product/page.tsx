@@ -282,13 +282,6 @@ const AddProduct = () => {
               <div ref={containerRef}>
                 {isVariantsEnabled && <Variant variants={variants} setVariants={setVariants} />}
               </div>
-
-              {/* <button type="submit" className="addProductButton">
-                Lägg till
-              </button>
-              <button type="submit" className="previewProductButton">
-                Förhandsgranska
-              </button> */}
             </form>
           </div>
         </div>

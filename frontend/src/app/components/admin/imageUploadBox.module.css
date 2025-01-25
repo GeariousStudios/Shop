@@ -10,9 +10,14 @@
   color: #555;
 }
 
+.imageUploadBox a {
+  width: 95%;
+  height: 95%;
+}
+
 .imageUploadBox img {
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -30,65 +35,51 @@
   height: 1.1rem;
 }
 
-.imageContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .imageActions {
+  position: absolute;
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 1.3rem;
+  margin-top: 3.8rem;
 }
 
 .altTextButton,
 .removeButton {
-  background-color: #f2f2f2;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  font-size: 0.7rem;
-}
-
-.altTextButton:hover,
-.removeButton:hover {
-  background-color: #e6e6e6;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.modalContent {
-  background: white;
-  padding: 1rem;
   border-radius: 4px;
-  width: 90%;
-  max-width: 300px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.modalActions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
+.altIcon,
+.closeIcon {
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
-.altTextInput {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.altTextButton {
+  color: #000;
+  background-color: #fff;
+}
+
+.removeButton {
+  color: #fff;
+  background-color: #c03232;
+}
+
+.altTextButton:hover {
+  background-color: #e9e9e9;
+}
+
+.removeButton:hover {
+  background-color: #a82b2b;
+}
+
+.charCount {
+  display: block !important;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
 }

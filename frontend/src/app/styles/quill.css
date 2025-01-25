@@ -33,12 +33,12 @@
 }
 
 .ql-container:focus-within {
-  border-color: #268000 !important;
+  border-color: #555 !important;
 }
 
 .ql-toolbar:focus-within {
-  border-color: #268000 !important;
-  border-bottom: 1px solid #268000 !important;
+  border-color: #555 !important;
+  border-bottom: 1px solid #555 !important;
 }
 
 /* - Font button - */
